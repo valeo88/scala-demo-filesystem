@@ -1,5 +1,7 @@
 package com.valeopopov.demofilesystem.files
 
+import com.valeopopov.demofilesystem.filesystem.FilesystemException
+
 class Directory(override val parentPath: String, override val name: String, val contents: List[DirEntry])
   extends DirEntry(parentPath, name) {
   // replace entry with entryName by newEntry in this directory
@@ -24,6 +26,7 @@ class Directory(override val parentPath: String, override val name: String, val 
     }
 
   override def asDirectory: Directory = this
+  override def asFile: File = throw new FilesystemException("Directory can't be a file")
   override def getType: String = "Folder"
 }
 
