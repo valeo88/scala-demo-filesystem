@@ -27,8 +27,10 @@ abstract class CreateEntry(name: String) extends Command {
     def updateStructure(currentDirectory: Directory, path: List[String], newEntry: DirEntry): Directory = {
       if (path.isEmpty) currentDirectory.addEntry(newEntry)
       else {
-        val oldEntry = currentDirectory.findEntry(path.head).get.asDirectory
-        currentDirectory.replaceEntry(oldEntry.name, updateStructure(currentDirectory, path.tail, newEntry))
+        currentDirectory.findEntry(path.head)
+          .map(_.asDirectory)
+          .map(oldEntry => currentDirectory.replaceEntry(oldEntry.name, updateStructure(oldEntry, path.tail, newEntry)))
+          .get
       }
     }
 

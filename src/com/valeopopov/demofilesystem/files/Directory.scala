@@ -4,6 +4,8 @@ import com.valeopopov.demofilesystem.filesystem.FilesystemException
 
 class Directory(override val parentPath: String, override val name: String, val contents: List[DirEntry])
   extends DirEntry(parentPath, name) {
+  def isRoot: Boolean = parentPath.isEmpty
+
   // replace entry with entryName by newEntry in this directory
   def replaceEntry(entryName: String, newEntry: DirEntry): Directory =
     new Directory(parentPath, name, contents.filter(!_.name.equals(entryName)) :+ newEntry)
@@ -22,19 +24,24 @@ class Directory(override val parentPath: String, override val name: String, val 
   def findDescendant(path: List[String]): Option[Directory] =
     if (path.isEmpty) Option(this)
     else {
-      findEntry(path.head).map(_.asDirectory).flatMap(_.findDescendant(path.tail)).orElse(Option.empty)
+      findEntry(path.head)
+        .filter(_.isDirectory)
+        .flatMap(_.asDirectory.findDescendant(path.tail))
+        .orElse(Option.empty)
     }
 
   override def asDirectory: Directory = this
   override def asFile: File = throw new FilesystemException("Directory can't be a file")
   override def getType: String = "Folder"
+  override def isDirectory: Boolean = true
+  override def isFile: Boolean = false
 }
 
 object Directory {
   val SEPARATOR = "/"
   val ROOT_PATH = "/"
 
-  def ROOT: Directory = Directory.empty("","")
+  def ROOT: Directory = Directory.empty(ROOT_PATH,"")
 
   def empty(parentPath: String, name: String) = new Directory(parentPath, name, List.empty)
 }
