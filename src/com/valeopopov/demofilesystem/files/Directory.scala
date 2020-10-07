@@ -22,7 +22,8 @@ class Directory(override val parentPath: String, override val name: String, val 
 
   // find descendant directory by its path in this directory
   def findDescendant(path: List[String]): Option[Directory] =
-    if (path.isEmpty) Option(this)
+    if (path == null) Option.empty
+    else if (path.isEmpty) Option(this)
     else {
       findEntry(path.head)
         .filter(_.isDirectory)
