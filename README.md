@@ -9,5 +9,5 @@ Supported command:
 - **mkdir** (only in working directory)
 - **touch** (only in working directory)
 - **rm** (with relative paths)
-All operations running through the console. 
-Sometimes I use more functional approach than in this original project.
+
+P.S. All operations running through the console. Sometimes I use more functional approach than in this original project.
