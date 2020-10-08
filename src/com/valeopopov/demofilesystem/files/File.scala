@@ -2,7 +2,7 @@ package com.valeopopov.demofilesystem.files
 
 import com.valeopopov.demofilesystem.filesystem.FilesystemException
 
-class File(override val parentPath: String, override val name: String, content: String)
+class File(override val parentPath: String, override val name: String, val content: String)
   extends DirEntry(parentPath, name) {
 
   override def asDirectory: Directory = throw new FilesystemException("File can't be converted to directory")
