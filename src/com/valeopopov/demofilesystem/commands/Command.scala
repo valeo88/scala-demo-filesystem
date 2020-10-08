@@ -12,6 +12,7 @@ object Command {
   val TOUCH = "touch"
   val CD = "cd"
   val RM = "rm"
+  val ECHO = "echo"
 
   def emptyCommand: Command =
     state => state
@@ -38,6 +39,9 @@ object Command {
       case RM =>
         if (tokens.length < 2) incompleteCommand(RM)
         else new Rm(tokens(1))
+      case ECHO =>
+        if (tokens.length < 2) incompleteCommand(ECHO)
+        else new Echo(tokens.tail)
       case _ => new UnknownCommand
     }
   }
